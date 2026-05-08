@@ -1,9 +1,17 @@
-FROM node:18
+pipeline {
+    agent any
 
-WORKDIR /app
+    stages {
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t jenkins-demo .'
+            }
+        }
 
-COPY . .
-
-RUN npm install
-
-CMD ["node", "app.js"]
+        stage('Run Docker Container') {
+            steps {
+                sh 'docker run --name my-node-app jenkins-demo'
+            }
+        }
+    }
+}
