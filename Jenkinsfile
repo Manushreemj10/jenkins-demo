@@ -1,20 +1,16 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs 'NodeJS-18'
-    }
-
     stages {
-        stage('Install') {
+        stage('Build Docker Image') {
             steps {
-                sh 'npm install'
+                sh 'docker build -t jenkins-demo .'
             }
         }
 
-        stage('Run App') {
+        stage('Run Docker Container') {
             steps {
-                sh 'node app.js'
+                sh 'docker run --name my-node-app jenkins-demo'
             }
         }
     }
